@@ -12,8 +12,4 @@ import org.springframework.context.annotation.Configuration;
 public class LogConfig {
     private static final Logger LOG = LoggerFactory.getLogger(LogConfig.class);
 
-
-    public void logMethod() {
-        LOG.info("==========print log==========");
-    }
 }
