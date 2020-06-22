@@ -9,7 +9,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 
-@TableName("user")
+@TableName("user_1")
 public class User {
 
     @TableId("id")
