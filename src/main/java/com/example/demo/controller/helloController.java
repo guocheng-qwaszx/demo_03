@@ -38,5 +38,18 @@ public class helloController {
         return ResultGenerator.makeOKRsp(userVo);
     }
 
+    @GetMapping("/q1")
+    public String get1() {
+        return "hello1";
+    }
 
+    @GetMapping("/q2")
+    public String get2() {
+        return "hello1";
+    }
+
+    @GetMapping("/q3")
+    public String get3() {
+        return "hello1";
+    }
 }
