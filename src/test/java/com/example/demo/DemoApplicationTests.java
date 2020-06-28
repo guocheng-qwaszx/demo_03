@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.config.LogConfig;
+import com.example.demo.dao.LoginMapper;
 import com.example.demo.dao.UserMapper;
 import com.example.demo.entity.User;
+import com.example.demo.entity.login1;
+import com.example.demo.service.CustomUserDetailsService;
 import org.apache.ibatis.annotations.Lang;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -28,6 +31,9 @@ class DemoApplicationTests {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private LoginMapper loginMapper;
 
     @Test
     public void select() {
@@ -96,6 +102,11 @@ class DemoApplicationTests {
         LOG.warn("-----warn");
         LOG.error("-----error");
     }
-
-
+    @Test
+    public void selectOne(){
+        QueryWrapper queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("login","admin");
+        login1 ll = loginMapper.selectOne(queryWrapper);
+        System.out.println("---------"+ll.getLogin() + "-------" + ll.getPassword());
+    }
 }

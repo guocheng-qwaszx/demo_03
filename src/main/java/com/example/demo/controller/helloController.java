@@ -9,6 +9,8 @@ import com.example.demo.dao.UserMapper;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserVo;
 import io.swagger.annotations.Api;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +52,14 @@ public class helloController {
 
     @GetMapping("/q3")
     public String get3() {
-        return "hello1";
+        String currentUser = "";
+        Object principl = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("----------"+principl);
+        if(principl instanceof UserDetails) {
+            currentUser = ((UserDetails)principl).getUsername();
+        }else {
+            currentUser = principl.toString();
+        }
+        return " some product info,currentUser is: "+currentUser;
     }
 }

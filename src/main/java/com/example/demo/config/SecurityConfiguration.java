@@ -1,27 +1,29 @@
 package com.example.demo.config;
 
 
+import com.example.demo.service.CustomUserDetailsService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    CustomUserDetailsService customUserDetailsService = new CustomUserDetailsService();
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .inMemoryAuthentication()
-                .withUser("admin1") // 管理员，同事具有 ADMIN,USER权限，可以访问所有资源
-                .password("{noop}admin1")  //
-                .roles("ADMIN", "USER")
-                .and()
-                .withUser("user1").password("{noop}user1") // 普通用户，只能访问 /product/**
-                .roles("USER");
+                .userDetailsService(customUserDetailsService)// 设置自定义的userDetailsService
+                .passwordEncoder(passwordEncoder());
     }
+
 
 
 
@@ -30,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
         .authorizeRequests()
                 .antMatchers("/hello/**").hasRole("USER")
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/hello1/**").hasRole("ADMIN")
         .anyRequest()
         .authenticated()
         .and()
@@ -39,4 +41,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .httpBasic()
         ;
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
 }
